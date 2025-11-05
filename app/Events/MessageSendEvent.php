@@ -9,6 +9,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
 class MessageSendEvent implements ShouldBroadcastNow {
+    
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $data;

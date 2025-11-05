@@ -53,7 +53,6 @@ class User extends Authenticatable implements JWTSubject
     ];
 
     protected $appends = [
-        'role',
         'is_online',
         'balance'
     ];
@@ -153,5 +152,5 @@ class User extends Authenticatable implements JWTSubject
     {
         return Room::where('user_one_id', $this->id)->orWhere('user_two_id', $this->id);
     }
-    
+
 }

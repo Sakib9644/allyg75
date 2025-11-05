@@ -17,7 +17,7 @@ class LoginController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->select = ['id', 'name', 'email', 'avatar', 'otp_verified_at', 'last_activity_at'];   
+        $this->select = ['id', 'name', 'email', 'avatar', 'otp_verified_at', 'last_activity_at','latitude'];
     }
 
     public function Login(Request $request)
@@ -48,11 +48,11 @@ class LoginController extends Controller
             if (!Hash::check($request->password, $user->password)) {
                 return Helper::jsonResponse(false, 'Invalid password', 401);
             }
-            
+
             //? Check if the email is verified before login is successful
             if (!$user->otp_verified_at) {
                 return Helper::jsonResponse(false, 'Email not verified. Please verify your email before logging in.', 403, ['is_otp_verified' => $user->isOtpVerified]);
-            }else{
+            } else {
                 $user->update([
                     'otp'            => null,
                     'otp_expires_at' => null,
@@ -68,7 +68,10 @@ class LoginController extends Controller
             //* Generate token if email is verified
             $token = auth('api')->login($user);
 
-            $data = User::select($this->select)->with('roles')->find(auth('api')->user()->id);
+            $user = User::select($this->select)->find(auth('api')->user()->id);
+
+            // Add a temporary attribute (not saved in DB)
+            $user->is_location = $user->latitude ? true:false;
 
             return response()->json([
                 'status'     => true,
@@ -77,9 +80,8 @@ class LoginController extends Controller
                 'token_type' => 'bearer',
                 'token'      => $token,
                 'expires_in' => auth('api')->factory()->getTTL() * 60,
-                'data'       => $data,
+                'data'       => $user, // Still an object, not array
             ], 200);
-
         } catch (Exception $e) {
             return Helper::jsonResponse(false, 'An error occurred during login.', 500, ['error' => $e->getMessage()]);
         }
@@ -103,5 +105,4 @@ class LoginController extends Controller
             'data' => auth('api')->user()
         ]);
     }
-
 }

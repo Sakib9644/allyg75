@@ -35,7 +35,6 @@ class RegisterController extends Controller
             'email'      => 'required|string|email|max:150|unique:users',
             'password'   => 'required|string|min:6|confirmed',
             'role'       => 'required|exists:roles,id',
-            'agree'      => 'required|in:true',
         ]);
         try {
             DB::beginTransaction();
@@ -79,7 +78,7 @@ class RegisterController extends Controller
             //$this->twilioSms($phone, 'this sms for testing.');
             //$this->bdSms($phone, 'this sms for testing. thard sms');
 
-            $data = User::select($this->select)->with('roles')->find($user->id);
+            $data = User::select($this->select)->find($user->id);
 
             Mail::to($user->email)->send(new OtpMail($user->otp, $user, 'Verify Your Email Address'));
 
@@ -96,7 +95,7 @@ class RegisterController extends Controller
                 'expires_in' => auth('api')->factory()->getTTL() * 60,
                 'data' => $data
             ], 200);
-            
+
         } catch (Exception $e) {
             DB::rollBack();
             return Helper::jsonErrorResponse('User registration failed', 500, [$e->getMessage()]);
@@ -167,6 +166,41 @@ class RegisterController extends Controller
             return Helper::jsonResponse(true, 'A new OTP has been sent to your email.', 200);
         } catch (Exception $e) {
             return Helper::jsonErrorResponse($e->getMessage(), 200);
+        }
+    }
+
+    public function store(Request $request,$id)
+    {
+        // Get authenticated user
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not authenticated',
+            ], 401);
+        }
+
+        // Update user location data
+        $user->longitude = $request->longitude;
+        $user->latitude = $request->latitude;
+        $user->address = $request->address;
+
+        if ($user->save()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'User location updated successfully',
+                'data' => [
+                    'longitude' => $user->longitude,
+                    'latitude' => $user->latitude,
+                    'address' => $user->address,
+                ],
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update user location',
+            ], 500);
         }
     }
 }
