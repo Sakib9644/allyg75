@@ -9,4 +9,9 @@ class Event extends Model
 
     protected $table = 'event';
     //
+
+    public function joinedEvents()
+    {
+        return $this->belongsToMany(Event::class, 'join_events');
+    }
 }

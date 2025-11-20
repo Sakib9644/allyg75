@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\Frontend\SettingsController;
 use App\Http\Controllers\Api\Frontend\SocialLinksController;
 use App\Http\Controllers\Api\Frontend\SubscriberController;
+use App\Http\Controllers\JoinEventController;
 use App\Http\Controllers\Api\PrayerTimesController;
 use Illuminate\Support\Facades\Route;
 
@@ -129,6 +130,9 @@ Route::middleware(['auth:api'])->controller(ChatController::class)->prefix('auth
 Route::prefix('cms')->name('cms.')->group(function () {
     Route::get('home', [HomeController::class, 'index'])->name('home');
 });
+Route::prefix('events')->name('events.')->group(function () {
+       Route::get('/', [JoinEventController::class, 'index']);
+    Route::post('/join-event/{eventId}', [JoinEventController::class, 'join']);});
 
 /*
 # prayer time
@@ -142,3 +146,4 @@ Route::prefix('prayer-times')->group(function () {
     Route::get('/today', [PrayerTimesController::class, 'today']);
     Route::get('/methods', [PrayerTimesController::class, 'methods']);
 });
+
