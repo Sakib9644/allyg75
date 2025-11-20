@@ -47,6 +47,13 @@
                         <span class="side-menu__label">Events</span>
                     </a>
                 </li>
+                <li class="slide">
+                    <a class="side-menu__item {{ request()->routeIs('admin.locations.*') ? 'has-link active' : '' }}"
+                        href="{{ route('admin.locations.index') }}">
+                        <i class="fa-solid fa-map-marker-alt side-menu__icon"></i>
+                        <span class="side-menu__label">Locations</span>
+                    </a>
+                </li>
 
 
 

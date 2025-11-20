@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\Web\Backend\Access\PermissionController;
 use App\Http\Controllers\Web\Backend\Access\RoleController;
@@ -464,3 +465,15 @@ Route::controller(EventController::class)->prefix('event')->name('event.')->grou
     Route::post('/update/{event}', 'update')->name('update'); // Update event
     Route::delete('/delete/{event}', 'destroy')->name('destroy'); // Delete event
 });
+
+Route::controller(LocationController::class)
+    ->prefix('locations')
+    ->name('locations.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');                // List all locations
+        Route::get('/create', 'create')->name('create');        // Show create form
+        Route::post('/store', 'store')->name('store');          // Store new location
+        Route::get('/edit/{location}', 'edit')->name('edit');   // Show edit form
+        Route::put('/update/{location}', 'update')->name('update'); // Update location
+        Route::delete('/delete/{location}', 'destroy')->name('destroy'); // Delete location
+    });

@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Auth\ResetPasswordController;
 use App\Http\Controllers\Api\Auth\UserController;
 use App\Http\Controllers\Api\Auth\SocialLoginController;
 use App\Http\Controllers\Api\ChatController;
+use App\Http\Controllers\Api\FindSupportController;
 use App\Http\Controllers\Api\FirebaseTokenController;
 use App\Http\Controllers\Api\Frontend\categoryController;
 use App\Http\Controllers\Api\Frontend\FaqController;
@@ -129,6 +130,9 @@ Route::middleware(['auth:api'])->controller(ChatController::class)->prefix('auth
 
 Route::prefix('cms')->name('cms.')->group(function () {
     Route::get('home', [HomeController::class, 'index'])->name('home');
+});
+Route::prefix('find-support')->name('find-support.')->group(function () {
+    Route::get('/', [FindSupportController::class, 'nearby'])->name('home');
 });
 Route::prefix('events')->name('events.')->group(function () {
        Route::get('/', [JoinEventController::class, 'index']);
