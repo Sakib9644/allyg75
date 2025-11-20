@@ -21,7 +21,7 @@ class ResetPasswordController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->select = ['id', 'name', 'email', 'avatar'];   
+        $this->select = ['id', 'name', 'email', 'avatar'];
     }
     public function forgotPassword(Request $request)
     {
@@ -56,7 +56,7 @@ class ResetPasswordController extends Controller
             'email' => 'required|email|exists:users,email',
             'otp'   => 'required|digits:4',
         ]);
-        
+
         try {
             $email = $request->input('email');
             $otp   = $request->input('otp');
@@ -110,7 +110,7 @@ class ResetPasswordController extends Controller
             }
 
             if (!empty($user->reset_password_token) && $user->reset_password_token === $request->token && $user->reset_password_token_expire_at >= Carbon::now()) {
-                
+
                 $user->password = Hash::make($newPassword);
                 $user->reset_password_token = null;
                 $user->reset_password_token_expire_at = null;

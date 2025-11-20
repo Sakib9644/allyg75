@@ -16,7 +16,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset(settings('favicon') ?? 'default/logo.svg') }}" />
 
     <!-- TITLE -->
-    <title>{{ config('app.name') }} - {{ $title ?? settings('title') ?? '' }}</title>
+    <title>allyg75</title>
     <!-- Scripts -->
 
     @vite(['resources/js/app.js'])

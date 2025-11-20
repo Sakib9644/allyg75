@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\Web\Backend\Access\PermissionController;
 use App\Http\Controllers\Web\Backend\Access\RoleController;
 use App\Http\Controllers\Web\Backend\Access\UserController;
@@ -455,3 +456,11 @@ Route::controller(CurriculumController::class)->prefix('curriculum')->name('curr
 
 
 
+Route::controller(EventController::class)->prefix('event')->name('event.')->group(function () {
+    Route::get('/', 'index')->name('index');              // List all events
+    Route::get('/create', 'create')->name('create');      // Show create form
+    Route::post('/store', 'store')->name('store');        // Store new event
+    Route::get('/edit/{event}', 'edit')->name('edit');    // Show edit form
+    Route::post('/update/{event}', 'update')->name('update'); // Update event
+    Route::delete('/delete/{event}', 'destroy')->name('destroy'); // Delete event
+});

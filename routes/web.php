@@ -8,6 +8,8 @@ use App\Http\Controllers\Web\Frontend\PageController;
 use App\Http\Controllers\Web\Frontend\SubscriberController;
 use App\Http\Controllers\Web\NotificationController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
+
 
 Route::get('/',[HomeController::class, 'index'])->name('home');
 
@@ -31,5 +33,14 @@ Route::controller(NotificationController::class)->prefix('notification')->name('
 })->middleware('auth');
 
 Route::get('/page/{slug}',[PageController::class, 'index']);
+
+
+Route::get('/run-migrations', function () {
+    Artisan::call('migrate', [
+        '--force' => true, // force the migration in production
+    ]);
+
+    return 'Migrations have been run successfully!';
+});
 
 require __DIR__.'/auth.php';

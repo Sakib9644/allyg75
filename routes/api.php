@@ -63,20 +63,16 @@ Route::get('dynamic/page/show/{slug}', [PageController::class, 'show']);
 */
 
 Route::group(['middleware' => 'guest:api'], function ($router) {
-    //register
     Route::post('register', [RegisterController::class, 'register']);
 
     Route::post('location/store/{id}', [RegisterController::class, 'store']);
     Route::post('/verify-email', [RegisterController::class, 'VerifyEmail']);
     Route::post('/resend-otp', [RegisterController::class, 'ResendOtp']);
     Route::post('/verify-otp', [RegisterController::class, 'VerifyEmail']);
-    //login
     Route::post('login', [LoginController::class, 'login'])->name('api.login');
-    //forgot password
     Route::post('/forget-password', [ResetPasswordController::class, 'forgotPassword']);
     Route::post('/otp-token', [ResetPasswordController::class, 'MakeOtpToken']);
     Route::post('/reset-password', [ResetPasswordController::class, 'ResetPassword']);
-    //social login
     Route::post('/social-login', [SocialLoginController::class, 'SocialLogin']);
 });
 
@@ -139,6 +135,8 @@ Route::prefix('cms')->name('cms.')->group(function () {
 # http:://127.0.0.1:8000/api/prayer-times?date=2025-12-25&lat=23.7018&lng=90.3742&timezone=6&method=1
 # http:://127.0.0.1:8000/api/prayer-times/today?lat=23.7018&lng=90.3742&timezone=6&method=1
 */
+
+
 Route::prefix('prayer-times')->group(function () {
     Route::get('/', [PrayerTimesController::class, 'index']);
     Route::get('/today', [PrayerTimesController::class, 'today']);

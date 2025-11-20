@@ -65,12 +65,10 @@ class LoginController extends Controller
                 'last_activity_at' => now(),
             ]);
 
-            //* Generate token if email is verified
             $token = auth('api')->login($user);
 
             $user = User::select($this->select)->find(auth('api')->user()->id);
 
-            // Add a temporary attribute (not saved in DB)
             $user->is_location = $user->latitude ? true:false;
 
             return response()->json([
@@ -80,7 +78,7 @@ class LoginController extends Controller
                 'token_type' => 'bearer',
                 'token'      => $token,
                 'expires_in' => auth('api')->factory()->getTTL() * 60,
-                'data'       => $user, // Still an object, not array
+                'data'       => $user,
             ], 200);
         } catch (Exception $e) {
             return Helper::jsonResponse(false, 'An error occurred during login.', 500, ['error' => $e->getMessage()]);
