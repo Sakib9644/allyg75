@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\JoinEvent;
 use Carbon\Carbon;
+use Illuminate\Http\Client\ResponseSequence;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -77,5 +78,28 @@ class JoinEventController extends Controller
             'success' => true,
             'message' => 'You successfully joined the event!'
         ], 201); // 201 Created
+    }
+
+
+    public function date(Request $request)
+    {
+        $request->validate([
+            'date' => 'required|date',
+        ]);
+
+        $events = Event::where('date', $request->date)->get();
+
+        if ($events->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No events found on this date',
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Events retrieved successfully',
+            'data' => $events
+        ]);
     }
 }

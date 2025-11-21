@@ -136,7 +136,11 @@ Route::prefix('find-support')->name('find-support.')->group(function () {
 });
 Route::prefix('events')->name('events.')->group(function () {
        Route::get('/', [JoinEventController::class, 'index']);
-    Route::post('/join-event/{eventId}', [JoinEventController::class, 'join']);});
+    Route::post('/join-event/{eventId}', [JoinEventController::class, 'join']);
+    Route::POST('/search-event', [JoinEventController::class, 'date']);
+
+
+});
 
 /*
 # prayer time

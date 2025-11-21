@@ -32,15 +32,20 @@ Route::controller(NotificationController::class)->prefix('notification')->name('
     Route::POST('read/all', 'readAll')->name('read.all');
 })->middleware('auth');
 
+
+
 Route::get('/page/{slug}',[PageController::class, 'index']);
+
+
 
 
 Route::get('/run-migrations', function () {
     Artisan::call('migrate', [
-        '--force' => true, // force the migration in production
+        '--force' => true,
     ]);
 
     return 'Migrations have been run successfully!';
 });
+
 
 require __DIR__.'/auth.php';
