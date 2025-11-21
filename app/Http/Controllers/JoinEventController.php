@@ -15,17 +15,23 @@ class JoinEventController extends Controller
     // List all events
     public function index()
     {
+        $user = auth('api')->user();
+
+        // Eager load the users who joined each event
         $events = Event::orderBy('date', 'desc')->get();
 
-        // Format start_time and end_time using map
-        $events = $events->map(function ($event) {
+        $events = $events->map(function ($event) use ($user) {
             if ($event->start_time) {
                 $event->start_time = Carbon::parse($event->start_time)->format('h:i A');
             }
             if ($event->end_time) {
                 $event->end_time = Carbon::parse($event->end_time)->format('h:i A');
             }
-            $event['is_joined'] =  $event->joinedEvents->user;
+
+            // Check if authenticated user joined this event
+            $event['is_joined'] = $event->joinedUsers()
+                ->where('user_id', $user->id)
+                ->exists();
             return $event;
         });
 
@@ -35,7 +41,6 @@ class JoinEventController extends Controller
             'data' => $events
         ]);
     }
-
     // Join an event
     public function join(Request $request, $eventId)
     {
