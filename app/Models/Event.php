@@ -14,4 +14,6 @@ class Event extends Model
     {
         return $this->belongsToMany(Event::class, 'join_events');
     }
+
+    
 }

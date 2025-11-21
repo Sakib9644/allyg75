@@ -30,11 +30,9 @@ Route::get('/page/home', [HomeController::class, 'index']);
 
 Route::get('/category', [categoryController::class, 'index']);
 Route::get('/subcategory', [SubcategoryController::class, 'index']);
-
 Route::get('/social/links', [SocialLinksController::class, 'index']);
 Route::get('/settings', [SettingsController::class, 'index']);
 Route::get('/faq', [FaqController::class, 'index']);
-
 Route::post('subscriber/store',[SubscriberController::class, 'store'])->name('api.subscriber.store');
 
 /*
@@ -66,7 +64,6 @@ Route::get('dynamic/page/show/{slug}', [PageController::class, 'show']);
 
 Route::group(['middleware' => 'guest:api'], function ($router) {
     Route::post('register', [RegisterController::class, 'register']);
-
     Route::post('location/store/{id}', [RegisterController::class, 'store']);
     Route::post('/verify-email', [RegisterController::class, 'VerifyEmail']);
     Route::post('/resend-otp', [RegisterController::class, 'ResendOtp']);
@@ -134,6 +131,7 @@ Route::prefix('cms')->name('cms.')->group(function () {
 Route::prefix('find-support')->name('find-support.')->group(function () {
     Route::get('/', [FindSupportController::class, 'nearby'])->name('home');
 });
+
 Route::prefix('events')->name('events.')->group(function () {
        Route::get('/', [JoinEventController::class, 'index']);
     Route::post('/join-event/{eventId}', [JoinEventController::class, 'join']);
