@@ -169,7 +169,7 @@ class RegisterController extends Controller
         }
     }
 
-    public function store(Request $request,$id)
+    public function store()
     {
         // Get authenticated user
         $user = auth('api')->user();
