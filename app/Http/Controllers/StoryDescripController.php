@@ -25,7 +25,7 @@ class StoryDescripController extends Controller
         $request->validate([
             'my_stories_id' => 'required|exists:my_stories,id',
             'description' => 'required|string',
-            'cover_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'cover_image' => 'required|image|mimes:jpeg,png,jpg,gif',
         ]);
 
         $coverImagePath = Helper::fileUpload(
@@ -41,20 +41,19 @@ class StoryDescripController extends Controller
         ]);
 
         return redirect()->route('admin.mystories.index')
-                         ->with('t-success', 'Description added successfully.');
+            ->with('t-success', 'Description added successfully.');
     }
-public function destroy(StoryDescrip $description)
-{
-    // Optionally, delete the cover image file from storage
-    if ($description->cover_image && file_exists(public_path($description->cover_image))) {
-        @unlink(public_path($description->cover_image));
+    public function destroy(StoryDescrip $description)
+    {
+        if ($description->cover_image && file_exists(public_path($description->cover_image))) {
+            @unlink(public_path($description->cover_image));
+        }
+
+        $description->delete();
+
+        return redirect()->route('admin.story_descrips.index', $description->my_stories_id)
+            ->with('t-success', 'Description deleted successfully.');
     }
-
-    $description->delete();
-
-    return redirect()->route('admin.story_descrips.index', $description->my_stories_id)
-                     ->with('t-success', 'Description deleted successfully.');
-}
     /**
      * List all descriptions for a story
      */
@@ -80,10 +79,9 @@ public function destroy(StoryDescrip $description)
     {
         $request->validate([
             'description' => 'required|string',
-            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif',
         ]);
 
-        // If a new cover image is uploaded, handle it
         if ($request->hasFile('cover_image')) {
             $coverImagePath = Helper::fileUpload(
                 $request->file('cover_image'),
@@ -97,6 +95,6 @@ public function destroy(StoryDescrip $description)
         $description->save();
 
         return redirect()->route('admin.story_descrips.index', $description->my_stories_id)
-                         ->with('t-success', 'Description updated successfully.');
+            ->with('t-success', 'Description updated successfully.');
     }
 }
