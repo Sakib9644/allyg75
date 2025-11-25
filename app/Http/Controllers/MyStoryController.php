@@ -28,7 +28,7 @@ class MyStoryController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'short_descriptions' => 'required|string',
-            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif',
         ]);
 
         // Upload thumbnail using Helper
@@ -62,7 +62,7 @@ class MyStoryController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'short_descriptions' => 'required|string',
-            'thumbnail' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'thumbnail' => 'sometimes|image|mimes:jpeg,png,jpg,gif',
         ]);
 
         if ($request->hasFile('thumbnail')) {
