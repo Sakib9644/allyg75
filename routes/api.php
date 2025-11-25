@@ -22,6 +22,8 @@ use App\Http\Controllers\Api\Frontend\SocialLinksController;
 use App\Http\Controllers\Api\Frontend\SubscriberController;
 use App\Http\Controllers\JoinEventController;
 use App\Http\Controllers\Api\PrayerTimesController;
+use App\Http\Controllers\MyStoryController;
+use App\Http\Controllers\storyController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -33,7 +35,7 @@ Route::get('/subcategory', [SubcategoryController::class, 'index']);
 Route::get('/social/links', [SocialLinksController::class, 'index']);
 Route::get('/settings', [SettingsController::class, 'index']);
 Route::get('/faq', [FaqController::class, 'index']);
-Route::post('subscriber/store',[SubscriberController::class, 'store'])->name('api.subscriber.store');
+Route::post('subscriber/store', [SubscriberController::class, 'store'])->name('api.subscriber.store');
 
 /*
 # Post
@@ -133,11 +135,9 @@ Route::prefix('find-support')->name('find-support.')->group(function () {
 });
 
 Route::prefix('events')->name('events.')->group(function () {
-       Route::get('/', [JoinEventController::class, 'index']);
+    Route::get('/', [JoinEventController::class, 'index']);
     Route::post('/join-event/{eventId}', [JoinEventController::class, 'join']);
     Route::POST('/search-event', [JoinEventController::class, 'date']);
-
-
 });
 
 /*
@@ -153,3 +153,7 @@ Route::prefix('prayer-times')->group(function () {
     Route::get('/methods', [PrayerTimesController::class, 'methods']);
 });
 
+Route::get('mystories', [storyController::class, 'index']);
+
+// Get all descriptions for a specific story
+Route::get('story_descrips/{id}', [storyController::class, 'details']);
