@@ -13,8 +13,8 @@ class StoryDescrip extends Model
         return $this->belongsTo(MyStory::class, 'my_stories_id');
     }
 
-       public function getCoverImageUrlAttribute()
+       public function getCoverImageAttribute($value)
     {
-        return $this->cover_image ? asset($this->cover_image) : null;
+        return $value ? asset($value) : null;
     }
 }
