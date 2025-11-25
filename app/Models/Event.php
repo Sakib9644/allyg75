@@ -12,7 +12,7 @@ class Event extends Model
 
     public function joinedUsers()
 {
-    return $this->belongsToMany(User::class, 'join_events', 'event_id', 'user_id');
+    return $this->belongsToMany(User::class, 'join_events');
 }
 
 

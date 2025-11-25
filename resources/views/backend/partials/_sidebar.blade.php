@@ -54,6 +54,13 @@
                         <span class="side-menu__label">Locations</span>
                     </a>
                 </li>
+                <li class="slide">
+                    <a class="side-menu__item {{ request()->routeIs('admin.mystories.*') ? 'has-link active' : '' }}"
+                        href="{{ route('admin.mystories.index') }}">
+                        <i class="fa-solid fa-book side-menu__icon"></i>
+                        <span class="side-menu__label">My Stories</span>
+                    </a>
+                </li>
 
 
 

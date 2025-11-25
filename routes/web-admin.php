@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\MyStoryController;
+use App\Http\Controllers\StoryDescripController;
 use App\Http\Controllers\Web\Backend\Access\PermissionController;
 use App\Http\Controllers\Web\Backend\Access\RoleController;
 use App\Http\Controllers\Web\Backend\Access\UserController;
@@ -476,4 +478,16 @@ Route::controller(LocationController::class)
         Route::get('/edit/{location}', 'edit')->name('edit');   // Show edit form
         Route::put('/update/{location}', 'update')->name('update'); // Update location
         Route::delete('/delete/{location}', 'destroy')->name('destroy'); // Delete location
+    });
+Route::resource('mystories', MyStoryController::class); // ❌ wrong
+Route::controller(StoryDescripController::class)
+    ->prefix('story_descrips')
+    ->name('story_descrips.')
+    ->group(function () {
+        Route::get('/{story}', 'index')->name('index');                // List all descriptions for a story
+        Route::get('/create/{story}', 'create')->name('create');       // Show create form for a story
+        Route::post('/store', 'store')->name('store');                 // Store new description
+        Route::get('/edit/{description}', 'edit')->name('edit');      // Show edit form
+        Route::put('/update/{description}', 'update')->name('update'); // Update description
+        Route::delete('/delete/{description}', 'destroy')->name('destroy'); // Delete description
     });

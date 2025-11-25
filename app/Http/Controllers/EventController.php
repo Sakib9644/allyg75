@@ -90,6 +90,11 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         $event->delete();
-        return redirect()->route('admin.event.index')->with('t-success', 'Event deleted successfully!');
+
+
+       $events =  Event::paginate(10);
+
+
+        return view('helper',compact('events'));
     }
 }

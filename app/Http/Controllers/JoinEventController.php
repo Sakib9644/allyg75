@@ -17,7 +17,6 @@ class JoinEventController extends Controller
     {
         $user = auth('api')->user();
 
-        // Eager load the users who joined each event
         $events = Event::orderBy('date', 'desc')->get();
 
         $events = $events->map(function ($event) use ($user) {
@@ -27,6 +26,7 @@ class JoinEventController extends Controller
             if ($event->end_time) {
                 $event->end_time = Carbon::parse($event->end_time)->format('h:i A');
             }
+
 
             // Check if authenticated user joined this event
             $event['is_joined'] = $event->joinedUsers()
@@ -71,10 +71,9 @@ class JoinEventController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'You already joined this event.'
-            ], 409); // 409 Conflict is better for duplicate join
+            ], 409);
         }
 
-        // Create JoinEvent
         JoinEvent::create([
             'user_id' => $user->id,
             'event_id' => $eventId,
@@ -83,7 +82,7 @@ class JoinEventController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'You successfully joined the event!'
-        ], 201); // 201 Created
+        ], 201);
     }
 
 

@@ -26,7 +26,9 @@
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+
+                                    @endphp
+                                    <tbody class='append'>
                                         @forelse($events as $event)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
@@ -41,8 +43,8 @@
                                                         class="btn btn-sm btn-warning">Edit</a>
 
                                                     <form action="{{ route('admin.event.destroy', $event->id) }}"
-                                                        method="POST" style="display:inline-block;"
-                                                        onsubmit="return confirm('Are you sure you want to delete this event?');">
+                                                        method="POST" class="delete-form" style="display:inline-block;"
+                                                        onsubmit="">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
@@ -70,3 +72,53 @@
         </div>
     </div>
 @endsection
+<script src="{{ asset('backend/plugins/jquery/jquery.min.js') }}"></script>
+
+<script>
+$(document).on('submit', '.delete-form', function(e) {
+    e.preventDefault();
+    let form = $(this);
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let url = form.attr('action');
+            let method = form.attr('method');
+            let data = form.serialize();
+
+            $.ajax({
+                url: url,
+                type: method,
+                data: data,
+                success: function(response) {
+                    $('.append').html(response);
+
+                    Swal.fire(
+                        'Deleted!',
+                        'The event has been deleted.',
+                        'success'
+                    )
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire(
+                        'Error!',
+                        'Something went wrong!',
+                        'error'
+                    );
+                    console.error(error);
+                }
+            });
+        }
+    });
+});
+
+</script>
+
