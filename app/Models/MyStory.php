@@ -14,4 +14,10 @@ class MyStory extends Model
     {
         return $this->hasMany(StoryDescrip::class, 'my_stories_id');
     }
+
+      public function getThumbnailUrlAttribute()
+    {
+        return $this->thumbnail ? asset($this->thumbnail) : null;
+    }
+
 }

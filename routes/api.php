@@ -155,5 +155,4 @@ Route::prefix('prayer-times')->group(function () {
 
 Route::get('mystories', [storyController::class, 'index']);
 
-// Get all descriptions for a specific story
 Route::get('story_descrips/{id}', [storyController::class, 'details']);
