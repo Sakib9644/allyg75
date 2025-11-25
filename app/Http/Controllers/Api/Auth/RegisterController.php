@@ -169,47 +169,38 @@ class RegisterController extends Controller
         }
     }
 
-   public function store(Request $request)
-{
-    // Get authenticated user model
-    $user = auth('api')->user();
-    dd( $user );
+    public function location(Request $request,$id = null)
+    {
+        // Get authenticated user
+        $user = User::find(auth('api')->id());
 
-    if (!$user) {
-        return response()->json([
-            'success' => false,
-            'message' => 'User not authenticated',
-        ], 401);
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not authenticated',
+            ], 401);
+        }
+
+        // Update user location data
+        $user->longitude = $request->longitude;
+        $user->latitude = $request->latitude;
+        $user->address = $request->address;
+
+        if ($user->save()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'User location updated successfully',
+                'data' => [
+                    'longitude' => $user->longitude,
+                    'latitude' => $user->latitude,
+                    'address' => $user->address,
+                ],
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update user location',
+            ], 500);
+        }
     }
-
-    // Validate incoming request
-    $request->validate([
-        'longitude' => 'required|numeric',
-        'latitude'  => 'required|numeric',
-        'address'   => 'required|string|max:500',
-    ]);
-
-    // Update user location data
-    $user->longitude = $request->longitude;
-    $user->latitude  = $request->latitude;
-    $user->address   = $request->address;
-
-    if ($user->save()) {
-        return response()->json([
-            'success' => true,
-            'message' => 'User location updated successfully',
-            'data' => [
-                'longitude' => $user->longitude,
-                'latitude'  => $user->latitude,
-                'address'   => $user->address,
-            ],
-        ], 200);
-    } else {
-        return response()->json([
-            'success' => false,
-            'message' => 'Failed to update user location',
-        ], 500);
-    }
-}
-
 }
