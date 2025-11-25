@@ -16,6 +16,7 @@ class StoryDescripController extends Controller
     {
         return view('backend.layouts.story_descrips.create', compact('story'));
     }
+    
 
     /**
      * Store a new description

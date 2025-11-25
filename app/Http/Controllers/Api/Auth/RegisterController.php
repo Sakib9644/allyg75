@@ -172,7 +172,7 @@ class RegisterController extends Controller
     public function store(Request $request,$id)
     {
         // Get authenticated user
-        $user = User::find($id);
+        $user = auth('api')->id();
 
         if (!$user) {
             return response()->json([
