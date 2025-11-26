@@ -191,6 +191,7 @@ class RegisterController extends Controller
                 'success' => true,
                 'message' => 'User location updated successfully',
                 'data' => [
+                    'name' => $user->name,
                     'longitude' => $user->longitude,
                     'latitude' => $user->latitude,
                     'address' => $user->address,
