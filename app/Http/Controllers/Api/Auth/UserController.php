@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Helpers\Helper;
 use App\Http\Controllers\Controller;
+use App\Models\Event;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -15,14 +17,27 @@ class UserController extends Controller
     public function __construct()
     {
         parent::__construct();
-        $this->select = ['id', 'name', 'email', 'avatar', 'otp_verified_at', 'last_activity_at'];   
+        $this->select = ['id', 'name', 'email', 'avatar', 'otp_verified_at', 'last_activity_at'];
     }
 
     public function me()
-    {   
-        $data = User::select($this->select)->with('roles')->find(auth('api')->user()->id);     
-        return Helper::jsonResponse(true, 'User details fetched successfully', 200, $data);
+    {
+        $user = User::select($this->select)->find(auth('api')->user()->id);
+
+        // Use the relation as a query to get count without loading models
+        $user['joined_event'] = $user->joinedevent()->count();
+
+        return Helper::jsonResponse(true, 'User details fetched successfully', 200, $user);
     }
+    public function futureevent()
+    {
+        $upcomingEvents = Event::where('Date', '>', Carbon::today())
+            ->orderBy('Date', 'asc') // soonest events first
+            ->get();
+
+        return Helper::jsonResponse(true, 'Upcoming events fetched successfully', 200, $upcomingEvents);
+    }
+
 
     public function updateProfile(Request $request)
     {
@@ -93,5 +108,4 @@ class UserController extends Controller
         $user->forceDelete();
         return Helper::jsonResponse(true, 'Profile deleted successfully', 200);
     }
-    
 }

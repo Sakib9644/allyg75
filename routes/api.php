@@ -81,6 +81,7 @@ Route::group(['middleware' => ['auth:api', 'api-otp']], function ($router) {
     Route::get('/refresh-token', [LoginController::class, 'refreshToken']);
     Route::post('/logout', [LogoutController::class, 'logout']);
     Route::get('/me', [UserController::class, 'me']);
+    Route::get('/future_event', [UserController::class, 'futureevent']);
     Route::get('/account/switch', [UserController::class, 'accountSwitch']);
     Route::post('/update-profile', [UserController::class, 'updateProfile']);
     Route::post('/update-avatar', [UserController::class, 'updateAvatar']);

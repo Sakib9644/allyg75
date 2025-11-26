@@ -30,7 +30,6 @@ class JoinEventController extends Controller
                 $event->end_time = Carbon::parse($event->end_time)->format('h:i A');
             }
 
-
             $event['is_joined'] = $event->joinedUsers()
                 ->where('user_id', $user->id)
                 ->exists();
