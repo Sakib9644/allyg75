@@ -8,5 +8,10 @@ class JoinEvent extends Model
 {
     //
 
-    protected $guarded = []; // allows mass assignment of all fields
+    protected $guarded = [];
+
+    public function joins()
+{
+    return $this->hasMany(JoinEvent::class, 'event_id');
+}
 }

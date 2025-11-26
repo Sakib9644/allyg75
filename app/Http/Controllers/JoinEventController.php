@@ -44,45 +44,50 @@ class JoinEventController extends Controller
         ]);
     }
     public function join(Request $request, $eventId)
-    {
-        $user = auth('api')->user();
+{
+    $user = auth('api')->user();
 
-        if (!$user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Unauthenticated.'
-            ], 401);
-        }
-
-        $event = Event::find($eventId);
-        if (!$event) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Event not found.'
-            ], 404);
-        }
-
-        $alreadyJoined = JoinEvent::where('user_id', $user->id)
-            ->where('event_id', $eventId)
-            ->exists();
-
-        if ($alreadyJoined) {
-            return response()->json([
-                'success' => false,
-                'message' => 'You already joined this event.'
-            ], 409);
-        }
-
-        JoinEvent::create([
-            'user_id' => $user->id,
-            'event_id' => $eventId,
-        ]);
-
+    if (!$user) {
         return response()->json([
-            'success' => true,
-            'message' => 'You successfully joined the event!'
-        ], 201);
+            'success' => false,
+            'message' => 'Unauthenticated.'
+        ], 401);
     }
+
+    $event = Event::find($eventId);
+    if (!$event) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Event not found.'
+        ], 404);
+    }
+
+    $alreadyJoined = JoinEvent::where('user_id', $user->id)
+        ->where('event_id', $eventId)
+        ->exists();
+
+    if ($alreadyJoined) {
+        return response()->json([
+            'success' => false,
+            'message' => 'You already joined this event.',
+            'join_count' => $event->joins()->count() // count of joins
+        ], 409);
+    }
+
+    JoinEvent::create([
+        'user_id' => $user->id,
+        'event_id' => $eventId,
+    ]);
+
+    // Return total join count
+    $joinCount = $event->joins()->count();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'You successfully joined the event!',
+        'join_count' => $joinCount
+    ], 201);
+}
 
 
     public function date(Request $request)
