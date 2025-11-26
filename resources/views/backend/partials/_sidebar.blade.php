@@ -62,7 +62,13 @@
                     </a>
                 </li>
 
-
+                <li class="slide">
+                    <a class="side-menu__item {{ request()->routeIs('admin.chat.*') ? 'has-link active' : '' }}"
+                        href="{{ route('admin.chat.index') }}">
+                        <i class="fa-brands fa-rocketchat side-menu__icon"></i>
+                        <span class="side-menu__label">Chat</span>
+                    </a>
+                </li>
 
             </ul>
             <div class="slide-right" id="slide-right"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191"

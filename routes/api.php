@@ -64,7 +64,7 @@ Route::get('dynamic/page/show/{slug}', [PageController::class, 'show']);
 # Auth Route
 */
 
-
+Route::group(['middleware' => 'guest:api'], function ($router) {
     Route::post('register', [RegisterController::class, 'register']);
     Route::post('user/location/store/{id?}', [RegisterController::class, 'location']);
     Route::post('/verify-email', [RegisterController::class, 'VerifyEmail']);
@@ -75,6 +75,7 @@ Route::get('dynamic/page/show/{slug}', [PageController::class, 'show']);
     Route::post('/otp-token', [ResetPasswordController::class, 'MakeOtpToken']);
     Route::post('/reset-password', [ResetPasswordController::class, 'ResetPassword']);
     Route::post('/social-login', [SocialLoginController::class, 'SocialLogin']);
+});
 
 Route::group(['middleware' => ['auth:api', 'api-otp']], function ($router) {
     Route::get('/refresh-token', [LoginController::class, 'refreshToken']);
