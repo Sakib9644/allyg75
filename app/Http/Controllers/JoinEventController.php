@@ -12,13 +12,12 @@ use Illuminate\Support\Facades\Auth;
 
 class JoinEventController extends Controller
 {
-    // List all events
     public function index(Request $request)
     {
         $user = auth('api')->user();
 
-        $page = $request->input('page', 1);      // default page 1
-        $perPage = $request->input('per_page', 5); // 5 items per page
+        $page = $request->input('page', 1);
+        $perPage = $request->input('per_page', 5);
 
         $events = Event::orderBy('id', 'asc')
             ->paginate($perPage, ['*'], 'page', $page);
@@ -32,7 +31,6 @@ class JoinEventController extends Controller
             }
 
 
-            // Check if authenticated user joined this event
             $event['is_joined'] = $event->joinedUsers()
                 ->where('user_id', $user->id)
                 ->exists();
@@ -45,7 +43,6 @@ class JoinEventController extends Controller
             'data' => $events
         ]);
     }
-    // Join an event
     public function join(Request $request, $eventId)
     {
         $user = auth('api')->user();
@@ -57,7 +54,6 @@ class JoinEventController extends Controller
             ], 401);
         }
 
-        // Check if the event exists
         $event = Event::find($eventId);
         if (!$event) {
             return response()->json([
@@ -66,7 +62,6 @@ class JoinEventController extends Controller
             ], 404);
         }
 
-        // Check if user already joined
         $alreadyJoined = JoinEvent::where('user_id', $user->id)
             ->where('event_id', $eventId)
             ->exists();

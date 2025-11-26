@@ -10,9 +10,9 @@ class MyStory extends Model
 
     protected $guarded = [];
 
-      public function story()
+      public function descriptions()
     {
-        return $this->hasMany(StoryDescrip::class, 'my_stories_id');
+        return $this->hasOne(StoryDescrip::class, 'my_stories_id');
     }
 
       public function getThumbnailAttribute($value)
