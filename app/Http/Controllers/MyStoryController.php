@@ -16,13 +16,11 @@ class MyStoryController extends Controller
         return view('backend.layouts.mystories.index', compact('stories'));
     }
 
-    // Show form to create a new story
     public function create()
     {
         return view('backend.layouts.mystories.create');
     }
 
-    // Store new story
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -31,11 +29,10 @@ class MyStoryController extends Controller
             'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif',
         ]);
 
-        // Upload thumbnail using Helper
         if ($request->hasFile('thumbnail')) {
             $thumbnailPath = Helper::fileUpload(
                 $request->file('thumbnail'),
-                'story_thumbnails', // folder name
+                'story_thumbnails',
                 time() . '_' . $request->file('thumbnail')->getClientOriginalName()
             );
         }

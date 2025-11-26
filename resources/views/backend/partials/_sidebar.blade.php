@@ -1,7 +1,6 @@
 @php
     use Illuminate\Support\Facades\Route;
 @endphp
-
 <!--APP-SIDEBAR-->
 <div class="sticky">
     <div class="app-sidebar__overlay" data-bs-toggle="sidebar"></div>
@@ -10,7 +9,7 @@
             <a class="header-brand1" href="{{ route('admin.dashboard') }}">
                 <img src="{{ asset(settings('logo') ?? 'default/logo.svg') }}" id="header-brand-logo" alt="logo"
                     width="{{ settings('logo_width') ?? 67 }}" height="{{ settings('logo_height') ?? 67 }}">
-            </a>
+                </a>
         </div>
         <div class="main-sidemenu">
             <input class="form-control form-control-dark w-100 border-0" id="menuSearching" type="text"

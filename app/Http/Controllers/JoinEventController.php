@@ -13,11 +13,15 @@ use Illuminate\Support\Facades\Auth;
 class JoinEventController extends Controller
 {
     // List all events
-    public function index()
+    public function index(Request $request)
     {
         $user = auth('api')->user();
 
-        $events = Event::orderBy('date', 'desc')->get();
+        $page = $request->input('page', 1);      // default page 1
+        $perPage = $request->input('per_page', 5); // 5 items per page
+
+        $events = Event::orderBy('id', 'asc')
+            ->paginate($perPage, ['*'], 'page', $page);
 
         $events = $events->map(function ($event) use ($user) {
             if ($event->start_time) {

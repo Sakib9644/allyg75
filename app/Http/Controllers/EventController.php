@@ -90,11 +90,7 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         $event->delete();
-
-
-       $events =  Event::paginate(10);
-
-
-        return view('helper',compact('events'));
+        $events =  Event::paginate(10);
+        return view('helper', compact('events'));
     }
 }
