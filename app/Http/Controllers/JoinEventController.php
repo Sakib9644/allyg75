@@ -40,7 +40,7 @@ class JoinEventController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Events retrieved successfully',
-            'join_count' => $user->joinedevent()->count()
+            'join_count' => $user->joinedevent()->count(),
             'data' => $events,
 
         ]);
