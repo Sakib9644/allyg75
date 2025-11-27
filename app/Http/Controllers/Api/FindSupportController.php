@@ -45,6 +45,7 @@ public function nearby(Request $request)
     return response()->json([
         'success' => true,
         'message' => 'Nearby locations retrieved successfully',
+        'total_locations' => $locations->count(),
         'data' => $locations
     ]);
 }
