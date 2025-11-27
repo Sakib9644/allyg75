@@ -47,5 +47,13 @@ Route::get('/run-migrations', function () {
     return 'Migrations have been run successfully!';
 });
 
+Route::get('/run-seeder', function () {
+    // Replace YourSeederName with the actual seeder class name
+    Artisan::call('db:seed', [
+        '--class' => 'event',
+        '--force' => true, // use this if running in production environment
+    ]);
 
+    return 'Seeder executed successfully!';
+});
 require __DIR__.'/auth.php';
