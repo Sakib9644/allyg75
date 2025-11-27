@@ -44,7 +44,6 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:100',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
-            'phone' => 'required|string|numeric|max_digits:20',
             'password' => 'nullable|string|min:6|confirmed',
             'address' => 'nullable|string|max:255',
         ]);
