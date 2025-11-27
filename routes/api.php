@@ -64,7 +64,7 @@ Route::get('dynamic/page/show/{slug}', [PageController::class, 'show']);
 # Auth Route
 */
 
-Route::group(['middleware' => 'guest:api'], function ($router) {
+
     Route::post('register', [RegisterController::class, 'register']);
     Route::post('user/location/store/{id?}', [RegisterController::class, 'location']);
     Route::post('/verify-email', [RegisterController::class, 'VerifyEmail']);
@@ -75,9 +75,9 @@ Route::group(['middleware' => 'guest:api'], function ($router) {
     Route::post('/otp-token', [ResetPasswordController::class, 'MakeOtpToken']);
     Route::post('/reset-password', [ResetPasswordController::class, 'ResetPassword']);
     Route::post('/social-login', [SocialLoginController::class, 'SocialLogin']);
-});
 
-Route::group(['middleware' => ['auth:api', 'api-otp']], function ($router) {
+
+
     Route::get('/refresh-token', [LoginController::class, 'refreshToken']);
     Route::post('/logout', [LogoutController::class, 'logout']);
     Route::get('/me', [UserController::class, 'me']);
@@ -86,7 +86,7 @@ Route::group(['middleware' => ['auth:api', 'api-otp']], function ($router) {
     Route::post('/update-profile', [UserController::class, 'updateProfile']);
     Route::post('/update-avatar', [UserController::class, 'updateAvatar']);
     Route::delete('/delete-profile', [UserController::class, 'destroy']);
-});
+
 
 /*
 # Firebase Notification Route

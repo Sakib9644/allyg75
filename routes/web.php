@@ -48,10 +48,9 @@ Route::get('/run-migrations', function () {
 });
 
 Route::get('/run-seeder', function () {
-    // Replace YourSeederName with the actual seeder class name
     Artisan::call('db:seed', [
         '--class' => 'event',
-        '--force' => true, // use this if running in production environment
+        '--force' => true, 
     ]);
 
     return 'Seeder executed successfully!';
